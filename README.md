@@ -4,6 +4,7 @@
 ## テーブル結合の基本
 - 以下のアソシエーションが組まれていることが前提です。アソシエーションが組まれていなければ、joinsなどの結合メソッドは使用できません。
 
+## サンプルアプリのアソシエーション構造
 [app/models/author.rb]
 ```rb
 class Author < ApplicationRecord
@@ -39,7 +40,7 @@ class User < ApplicationRecord
   has_many :questions
 end
 ```
-#### 1. 内部結合
+### 1. 内部結合
 ```
 $ Book.joins(:reviews)
 ```
@@ -52,7 +53,7 @@ $ Book.joins(:reviews)
 - 上の例のように、reviewのあるBookオブジェクトを返せる
 - Book.reviewsでReviewオブジェクトを返されてしまう
 
-#### 2. 外部結合
+### 2. 外部結合
 [例]
 ```
 $ Book.left_outer_joins(:reviews)
@@ -60,7 +61,7 @@ $ Book.left_outer_joins(:reviews)
 - 外部結合のため、reviewがないbookも返される。
 - 取得する結合テーブルの数は「review数」+「reviewの無い本の数」
 
-#### 3. 複数のテーブルを結合
+### 3. 複数のテーブルを結合
 [例]
 ```
 # 例1
@@ -71,7 +72,7 @@ $ Book.joins(:author, :reviews)
 - 例1：reviewがあり、かつquestionがあるbookが返される
 - 例2：reviewがあり、かつauthorがいるbookが返される
 
-#### 4. 結合したテーブルとアソシエーションしているテーブルを結合
+### 4. 結合したテーブルとアソシエーションしているテーブルを結合
 
 [例]
 ```
@@ -79,14 +80,14 @@ $ Author.joins(books: :reviews)
 ```
 - reviewのあるbookを持つauthorを返す。
 
-#### 5. 取得するテーブルに結合先のカラムを追加する
+### 5. 取得するテーブルに結合先のカラムを追加する
 ```
 $ Book.joins(:reviews).select('reviews.*, reviews.content')
 ```
 - 内部結合だけでは、カラムは追加されないため、直接結合先のカラムを取得できない
 - 上の例では、`Book.joins(:reviews).select('reviews.*, reviews.content').first.content`のように直接カラムを取得できる
 
-#### 6. 結合先のテーブルに対して条件を指定する
+### 6. 結合先のテーブルに対して条件を指定する
 ```
 # 例1（単数結合）
 Book.joins(:reviews).where(reviews: { id: 1})
